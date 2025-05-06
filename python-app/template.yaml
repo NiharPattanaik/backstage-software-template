@@ -47,6 +47,7 @@ spec:
         repoUrl: github.com?owner=NiharPattanaik&repo=${{parameters.component_id}}
         protectDefaultBranch: false
         repoVisibility: public
+        defaultBranch: master
 
     - id: register
       name: Register
