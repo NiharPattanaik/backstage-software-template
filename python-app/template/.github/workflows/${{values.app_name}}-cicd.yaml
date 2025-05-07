@@ -52,14 +52,14 @@ jobs:
         with:
           message: 'Update values.yaml with commit ${{ '${{needs.ci.outputs.commit_id}}' }}'
       
-      - name: Argo app Sync
+      - name: Download Argocd CLI
         shell: bash
         run: |
           curl -k -sSL -o argocd https://argocd-server.argocd/download/argocd-linux-amd64
           chmod +x argocd
           sudo mv ./argocd /usr/local/bin/argocd
 
-      - name: Argo app Sync
+      - name: Create and Sync App in Argocd
         shell: bash
         run: |
           argocd login argocd-server.argocd \
@@ -67,5 +67,7 @@ jobs:
             --grpc-web \
             --username admin \
             --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
+
+          argocd app create ${{values.app_name}} --repo https://github.com?owner=NiharPattanaik-Org&repo=${{values.app_name}} 
           argocd app sync ${{values.app_name}}
            
